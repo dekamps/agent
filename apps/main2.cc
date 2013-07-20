@@ -19,18 +19,12 @@
 #include <math.h>
 #include <algorithm>
 
-#define TRADERS (16)
+const int  TRADERS = 16;
 
 using namespace std;
 
 int main(int argc, char** argv)
 {
-
-/*  ifstream Inputs(argv[1]);
-  for(int i = 0; i < TRADERS; i++)
-    for(int j = 0; j < TRADERS; j++)
-      Inputs >> connections[i][j];
-  Inputs.close();  */
 
   int connections[TRADERS][TRADERS];
   double counts[TRADERS];
@@ -41,12 +35,17 @@ int main(int argc, char** argv)
   double est[TRADERS];
   bool types[TRADERS];
  
-  srand(atoi(argv[1]));  // sets the seed
+  srand(1234);             //               ---NEW
+
   int M = 0;//atoi(argv[2]);
-  int chartists = atoi(argv[3]);
-  double A = atof(argv[4]);
-  double B = atof(argv[5]);
-  double C = atof(argv[6]);
+
+  int chartists = 8;
+
+  double A = 0.3;          //               ---NEW
+  double B = 5.0;          //               ---NEW
+  double C = 1.5;          //               ---NEW
+
+  enum Trader {FUNDAMENTALIST, CHARTIST};
 
 for(M = 16; M <= 120; M+=2)
 {
@@ -68,36 +67,17 @@ for(M = 16; M <= 120; M+=2)
   double maxLi = 0;    
 
   for(int i = 0; i < chartists; i++)
-    types[i] = 1;
+    types[i] = CHARTIST;
   for(int i = chartists; i < TRADERS; i++)
-    types[i] = 0;
+    types[i] = FUNDAMENTALIST;
 
 
   for(int net = 0; net < NETS; net++)
   {
-    /*for(int i = 0; i < TRADERS; i++)
-      for(int j = 0; j < TRADERS; j++)
-      {
-        if(i == j || i == (j+TRADERS-1)%TRADERS || i == (j+1)%TRADERS)
-          connections[i][j] = 1;
-        else
-          connections[i][j] = 0;
-      }  
-    int count = TRADERS;
-    while(count < M)
-    {  
-      int x = (int)(TRADERS*(rand()/(RAND_MAX+1.0)));
-      int y = (int)(TRADERS*(rand()/(RAND_MAX+1.0)));
-      if(connections[x][y] == 0)
-      {
-        count++;
-        connections[x][y]=1;
-        connections[y][x]=1;
-      }
-    }*/
     bool noCon = true;
     while(noCon)
     {
+	   // first set all connections to 0 except self-connections, which are 1
       for(int i = 0; i < TRADERS; i++)
         for(int j = 0; j < TRADERS; j++)
         {
@@ -107,6 +87,8 @@ for(M = 16; M <= 120; M+=2)
             connections[i][j] = 0;
         }  
       int count = 0;
+
+	  // then randomly add 2*M symmetric connections
       while(count < M)
       {  
         int x = (int)(TRADERS*(rand()/(RAND_MAX+1.0)));
@@ -118,12 +100,14 @@ for(M = 16; M <= 120; M+=2)
           connections[y][x]=1;
         }
       }
+
+	  // now check whether all traders are connected, and if not, completely redo the generation
       bool reached[TRADERS];
       for(int i = 0; i < TRADERS; i++)
-        reached[i] = false;
+        reached[i] = false;				// all reached set to false
       bool toCheck[TRADERS];
       for(int i = 0; i < TRADERS; i++)
-        toCheck[i] = false;
+        toCheck[i] = false;				// all check set to false
       toCheck[0] = true;
       int needChecking = 1;
       int found = 0;
@@ -147,14 +131,9 @@ for(M = 16; M <= 120; M+=2)
       if(found == TRADERS)
         noCon = false;
     }
-  /*  for(int i = 0; i < TRADERS; i++)
-    {
-      for(int j = 0; j < TRADERS; j++)
-        cout << connections[i][j] << " ";
-      cout << endl;
-    }
-      cout << endl;
-*/
+
+	/// initialization ends here
+
     for(int i = 0; i < TRADERS; i++)
     {
       int sum = 0;
@@ -202,7 +181,7 @@ for(M = 16; M <= 120; M+=2)
           prices[choice] += demand/(counts[choice]/*-1*/);
         }
     
-        if(types[choice])
+        if(types[choice] == CHARTIST)
         {
           double deltaP = prices[choice] - lastPrice[choice];
           lastPrice[choice] = prices[choice];
@@ -210,7 +189,7 @@ for(M = 16; M <= 120; M+=2)
           double x = est[choice] - BONDRETURN;
           demands[choice] = 1.0/(1+exp(-4*B*x)) - 0.5;
         }
-        else
+        else // fundamentalist
         {
           demands[choice] = A*(ASSETVALUE-prices[choice]);
         } 
@@ -218,7 +197,7 @@ for(M = 16; M <= 120; M+=2)
           demandsP[i][choice] += demands[choice];
         if(!prePrice)
         {
-          for(int i  =0; i < TRADERS; i++)
+          for(int i  = 0; i < TRADERS; i++)
             if(connections[choice][i]==1)
                prices[i] += demands[choice]/counts[choice];
         }

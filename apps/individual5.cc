@@ -14,12 +14,12 @@
 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
-//#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <math.h>
 #include <algorithm>
 
-#define TRADERS (16)
+const int TRADERS = 16;
 
 using namespace std;
 
@@ -36,13 +36,19 @@ int main(int argc, char** argv)
   double est[TRADERS];
   bool types[TRADERS];
  
-  srand(atoi(argv[1]));
+//  srand(atoi(argv[1]));
+  srand(1234);
   int chartists = 4;
   int REPS = 1;
   int STEPS = 1000;
-  double A = atof(argv[3]);
-  double B = atof(argv[4]);
-  double C = atof(argv[5]);
+
+  double A = 0.3;
+  double B = 5.0;
+  double C = 1.5;
+
+//  double A = atof(argv[3]);
+//  double B = atof(argv[4]);
+//  double C = atof(argv[5]);
   double INITIALPRICE = 0.505;
   double ASSETVALUE = 0.5;
   double BONDRETURN = 0.0; 
