@@ -14,18 +14,79 @@
 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
+#include <boost/foreach.hpp>
 #include "Trader.h"
 
 using namespace AgentLib;
 
 Trader::Trader
 (
-	const Network& net,
-	Index i,
-	const AgentProperty& prop
-)
+	const Network&			net,
+	Index					i,
+	const AgentProperty&	prop,
+	const VectorTrader&		vec_trader
+):
+_net(net),
+_i_pos_in_net(i),
+_prop(prop),
+_var
+(
+0.0,
+prop._initial_price,
+prop._initial_price,
+0.0
+),
+_demandsP(net.Dimension(),0.0),
+_vec_trader(vec_trader)
 {
 }
+
 Trader::~Trader()
 {
 }
+
+
+Number Trader::NumberOfConnections() const
+{
+	Index predecs = 0;
+	for( Index j = 0; j < _net.Dimension(); j++)
+		predecs += static_cast<int>(_net(this->_i_pos_in_net,j));
+
+	return predecs;
+}
+
+void Trader::Shout(Time t)
+{
+	double demand = 0;
+	int predecs = NumberOfConnections();
+
+	for( Index j = 0; j < _net.Dimension(); j++){
+		if ( _net(this->_i_pos_in_net, j) != 0.0){
+			demand += _demandsP[j];
+			_demandsP[j] = 0;
+		}
+	}
+	_var._demand += demand/predecs;
+
+ /*   for(int i  = 0; i < TRADERS; i++)
+            if(connections[choice][i]==1)// && i != choice)
+            {
+               demand += demandsP[choice][i];
+               demandsP[choice][i] = 0;
+            }
+            //if(connections[choice][i]==1 && i != choice)
+            //   demand += demands[i];
+          prices[choice] += demand/(counts[choice]);
+ */    
+}
+
+void Trader::AdaptPrice(Time t)
+{
+	for (Index i = 0; i < _vec_trader.size(); i++)
+		_demandsP[i] += _var._demand;
+}
+/*
+{
+       for(int i = 0; i <TRADERS; i++)
+          demandsP[i][choice] += demands[choice];
+}*/

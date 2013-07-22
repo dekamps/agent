@@ -30,12 +30,16 @@ namespace AgentLib {
 
 		Fundamentalist
 		(
-			const Network&,			//! network through which price information is communicated
-			Index,					//! position of this trader in the network
-			const AgentProperty&	//! properties of this agent
+			const Network&,					//! network through which price information is communicated
+			Index,							//! position of this trader in the network
+			const AgentProperty&,			//! properties of this agent
+			const Trader::VectorTrader&		//! needs to be aware of the other Traders
 		);
 
 		virtual ~Fundamentalist();
+
+		//! update current state of this Fundamentalist
+		virtual void Update(Time); 
 	};
 
 }

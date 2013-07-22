@@ -19,14 +19,25 @@ using namespace AgentLib;
 
 Chartist::Chartist
 (
-	const Network&			net,
-	Index					i,
-	const AgentProperty&	prop
+	const Network&				net,
+	Index						i,
+	const AgentProperty&		prop,
+	const Trader::VectorTrader& vec_trad
 ):
-Trader(net,i,prop)
+Trader(net,i,prop,vec_trad)
 {
 }
 
 Chartist::~Chartist()
 {
+}
+
+void Chartist::Update(Index t)
+{
+	double deltaP = _var._price - _var._last_price;
+	_var._last_price = _var._price;
+	_var._estimate = _var._estimate + _prop._c*(deltaP-_var._estimate);
+	double x = _var._estimate - _prop._bond_return;
+	_var._demand = 1.0/(1+exp(-4*_prop._b*x)) - 0.5;
+ 
 }

@@ -20,5 +20,6 @@ namespace AgentLib {
 
 	typedef unsigned int Number;
 	typedef unsigned int Index;
+	typedef unsigned int Time;
 }
 #endif // inlcude guard

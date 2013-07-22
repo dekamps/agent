@@ -20,6 +20,8 @@ set( lib_SRC#
      Network.cpp
 	 NetworkSimulation.cpp
 	 RandomNetGenerator.cpp
+	 SimulationParameter.cpp
+	 Trader.cpp
  )
 
 set( lib_HEADERS
@@ -33,7 +35,9 @@ set( lib_HEADERS
      Network.h
 	 NetworkSimulation.h
 	 RandomNetGenerator.h
+	 SimulationParameter.h
 	 Trader.h
+	 TraderVariables.h
  )
 
 add_library( AgentLib ${LIB_TYPE} ${lib_SRC} ${lib_HEADERS})

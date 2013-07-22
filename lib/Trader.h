@@ -17,9 +17,11 @@
 #ifndef _LIBS_AGENT_TRADER
 #define _LIBS_AGENT_TRADER
 
+#include <boost/shared_ptr.hpp>
 #include "AgentProperty.h"
 #include "BasicDefinitions.h"
 #include "Network.h"
+#include "TraderVariables.h"
 
 namespace AgentLib {
 
@@ -29,16 +31,43 @@ namespace AgentLib {
 	class Trader {
 	public:
 
+		 typedef std::vector<boost::shared_ptr<Trader> > VectorTrader;
+
 		//! A trader must know about the network it is embedded in. It must also know about its position in the network.
 		Trader
 		(
 			const Network&, 
 			Index,
-			const AgentProperty&
+			const AgentProperty&,
+			const VectorTrader&
 		);
 
 		//! virtual destructor for all Trader classes
 		virtual ~Trader() = 0;
+
+		//! Common updates for arr traders in the network, but different from shout
+		virtual void Update(Time) = 0;
+
+		//! An individual trader can recalculate its price and shout.
+		virtual void Shout(Time);
+
+		//! Adapt prices
+		virtual void AdaptPrice(Time);
+
+		//! Number of Trader s connected to this one
+		Number NumberOfConnections() const;
+
+		Index Id() const { return _i_pos_in_net; }
+
+	protected:
+
+		const Network&		_net;
+		const Index			_i_pos_in_net;
+		const AgentProperty	_prop;
+		TraderVariables		_var;
+		std::vector<double>	_demandsP;
+
+		const VectorTrader& _vec_trader; 
 	};
 }
 

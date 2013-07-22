@@ -14,6 +14,7 @@
 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
+#include <boost/foreach.hpp>
 #include "Chartist.h"
 #include "Fundamentalist.h"
 #include "NetworkSimulation.h"
@@ -26,10 +27,27 @@ NetworkSimulation::NetworkSimulation
 	Number					n_chart,
 	Number					n_fund,
 	const AgentProperty&	prop
-)
+):
+_par_sim(0,0),
+_vec_trader(0)
 {
 	for (Index i = 0; i < n_chart; i++)
-		_vec_trader.push_back( boost::shared_ptr<Trader>(new Chartist(net,i,prop)));
+		_vec_trader.push_back( boost::shared_ptr<Trader>(new Chartist(net,i,prop,_vec_trader)));
 	for (Index j = 0; j < n_chart; j++)
-		_vec_trader.push_back( boost::shared_ptr<Trader>(new Fundamentalist(net,n_chart + j, prop)));
+		_vec_trader.push_back( boost::shared_ptr<Trader>(new Fundamentalist(net,n_chart + j, prop,_vec_trader)));
+}
+
+void NetworkSimulation::Configure(const SimulationParameter& par)
+{
+	_par_sim = par;
+}
+
+void NetworkSimulation::Run()
+{	
+	for (_state._t_current = _par_sim._i_start; _state._t_current < _par_sim._i_end; _state._t_current++){
+		int choice = (int)(_vec_trader.size()*(rand()/(RAND_MAX+1.0)));
+		_vec_trader[choice]->Update		(_state._t_current);
+		_vec_trader[choice]->Shout		(_state._t_current);
+		_vec_trader[choice]->AdaptPrice	(_state._t_current);
+	}
 }

@@ -40,6 +40,8 @@ namespace AgentLib {
 		//! Dimension of the network (number of nodes)
 		Number Dimension() const;
 
+		//! Access to weight matrix
+		double operator()(Index i, Index j) const { return _m(i,j); }
 	private:
 
 		matrix<double> _m;

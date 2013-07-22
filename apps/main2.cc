@@ -217,7 +217,8 @@ for(M = 16; M <= 120; M+=2)
             ++minima;
         }
 //        cout << price/TRADERS << " ";
-      }
+	  }
+
       if(sqdif < 0.001)
       {
         steady++;

@@ -18,3 +18,4 @@
 #include "RandomNetGenerator.h"
 #include "Network.h"
 #include "NetworkSimulation.h"
+#include "SimulationParameter.h"

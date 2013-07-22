@@ -25,6 +25,9 @@ namespace AgentLib {
 		double _a;
 		double _b;
 		double _c;
+		double _initial_price;
+		double _bond_return;
+		double _asset_value;
 	};
 
 }

@@ -41,6 +41,42 @@ BOOST_AUTO_TEST_CASE(NetworkSimulationCreationTest)
 			2,
 			prop
 		);
+}
 
-	
+BOOST_AUTO_TEST_CASE(SingleSimulationTest)
+{
+	SimulationParameter par_sim(0,1000);
+
+	FullyConnectedNetworkGenerator gen(2);
+	Network net(gen);
+
+
+	AgentProperty prop;
+
+	prop._a = 0.3;
+	prop._b = 0.5;
+	prop._c = 1.5;
+	prop._initial_price = 0.505;
+	prop._asset_value   = 0.5;
+	prop._bond_return   = 0.0;
+
+	NetworkSimulation
+		sim
+		(
+			net,
+			1,
+			1,
+			prop
+		);
+
+	SimulationParameter
+		par
+		(
+			0,
+			1000
+		);
+
+	sim.Configure(par);
+
+	sim.Run();
 }

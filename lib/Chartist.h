@@ -28,14 +28,20 @@ namespace AgentLib {
 	class Chartist : public Trader {
 	public:
 
+		//! constructor
 		Chartist
 		(
-			const Network&,			//! network through which price information is communicated
-			Index,					//! position of this trader in the network
-			const AgentProperty&	//! properties of this agent
+			const Network&,					//! network through which price information is communicated
+			Index,							//! position of this trader in the network
+			const AgentProperty&,			//! properties of this agent
+			const Trader::VectorTrader&		//! needs to be aware of the other Traders
 		);
 
+		//! destructor
 		virtual ~Chartist();
+
+		//! update current state according to network information
+		virtual void Update(Time);
 	};
 
 }

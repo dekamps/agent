@@ -22,6 +22,8 @@
 #include "AgentProperty.h"
 #include "BasicDefinitions.h"
 #include "Network.h"
+#include "NetworkState.h"
+#include "SimulationParameter.h"
 #include "Trader.h"
 
 namespace AgentLib {
@@ -40,9 +42,17 @@ namespace AgentLib {
 			const AgentProperty&	//! properties shared by all agents in the network
 		);
 
+		//! configure a simulation
+		void Configure(const SimulationParameter&);
+
+		//! run a simulation
+		void Run();
+
 	private:
 
-		std::vector< boost::shared_ptr<Trader> > _vec_trader;
+		NetworkState			_state;
+		Trader::VectorTrader	_vec_trader;
+		SimulationParameter		_par_sim;
 	};
 
 }

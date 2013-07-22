@@ -20,4 +20,12 @@ using namespace AgentLib;
 Network::Network(const AbstractNetworkGenerator& gen):
 _m(gen.Dimension(),gen.Dimension())
 {
+	for (Index i = 0; i < _m.size1(); i++)
+		for(Index j = 0; j < _m.size2(); j++ )
+			_m(i,j) = gen.CreateEdge(i,j);
+}
+
+Number Network::Dimension() const
+{
+	return _m.size1();
 }

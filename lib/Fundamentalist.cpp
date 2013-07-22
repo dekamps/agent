@@ -19,14 +19,21 @@ using namespace AgentLib;
 
 Fundamentalist::Fundamentalist
 (
-	const Network&			net,
-	Index					i,
-	const AgentProperty&	prop
+	const Network&					net,
+	Index							i,
+	const AgentProperty&			prop,
+	const Trader::VectorTrader&		vec_trad
 ):
-Trader(net,i,prop)
+Trader(net,i,prop,vec_trad)
 {
 }
 
 Fundamentalist::~Fundamentalist()
 {
 }
+
+void Fundamentalist::Update(Time t)
+{
+	_var._demand = _prop._a*(_prop._asset_value -_var._price);
+}
+
