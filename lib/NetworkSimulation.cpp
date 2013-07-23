@@ -31,6 +31,9 @@ NetworkSimulation::NetworkSimulation
 _par_sim(0,0),
 _vec_trader(0)
 {
+	if (n_chart + n_fund != net.Dimension() )
+		throw std::runtime_error("number of chartists and fundamentalists must match size of the network");
+
 	for (Index i = 0; i < n_chart; i++)
 		_vec_trader.push_back( boost::shared_ptr<Trader>(new Chartist(net,i,prop,_vec_trader)));
 	for (Index j = 0; j < n_chart; j++)

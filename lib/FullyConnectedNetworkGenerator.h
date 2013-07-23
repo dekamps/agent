@@ -32,7 +32,7 @@ namespace AgentLib {
 		virtual ~FullyConnectedNetworkGenerator();
 
 		//! All edges have always value 1.0
-		virtual double CreateEdge(Index i, Index j) const {return (i != j)? 1.0 : 0.0;}
+		virtual double CreateEdge(Index i, Index j) const {return 1.0;}
 
 		//! Size of the network
 		virtual Number Dimension() const { return _dimension; }

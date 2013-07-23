@@ -36,6 +36,10 @@ add_executable( DanOrig1
 add_executable( DanOrig2
 		individual5.cc )
 
+
+add_executable( SmallTest
+		mainsmall.cpp )
+
 add_executable( UnitAgentLib
 		UnitAgentLib.cpp
 		NetworkSimulationTest.cpp

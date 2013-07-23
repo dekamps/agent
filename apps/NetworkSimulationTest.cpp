@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(SingleSimulationTest)
 		par
 		(
 			0,
-			1000
+			10000
 		);
 
 	sim.Configure(par);

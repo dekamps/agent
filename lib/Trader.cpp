@@ -14,10 +14,12 @@
 * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
+#include <iostream>
 #include <boost/foreach.hpp>
 #include "Trader.h"
 
 using namespace AgentLib;
+using namespace std;
 
 Trader::Trader
 (
@@ -66,7 +68,9 @@ void Trader::Shout(Time t)
 			_demandsP[j] = 0;
 		}
 	}
-	_var._demand += demand/predecs;
+	_var._price += demand/predecs;
+
+	cout << this->Id() << " " << _var._price << endl;
 
  /*   for(int i  = 0; i < TRADERS; i++)
             if(connections[choice][i]==1)// && i != choice)
